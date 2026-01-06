@@ -1,6 +1,7 @@
 import re
 import pandas as pd
 
+
 def normalize_excel_text(value: str) -> str:
     if value is None:
         return ""
