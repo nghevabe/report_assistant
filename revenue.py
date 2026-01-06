@@ -50,11 +50,13 @@ def lst_banknotes_by_pgd(lst_ma_pgd, banknote):
     return set(lst_revenue)
 
 
-def revenue_calculate(lst_pgd):
+def get_revenue_calculate_matrix(lst_pgd):
     data_exchange = get_exchange(url_api)
+    matrix_revenue_face_value = []
 
     face_value_index = 0
     for face_money_flat in lst_flat_face_money:
+        lst_revenue_face_value = []
         face_value_index += 1
         if "Thành tiền" not in face_money_flat:
             lst_banknotes = df.iloc[:, 27 + face_value_index].tolist()
@@ -64,9 +66,16 @@ def revenue_calculate(lst_pgd):
             for banknote_item in lst_banknotes:
                 currency_code = face_money_flat.split("#")[0]
                 face_money_value = face_money_flat.split("#")[1]
-                exchange_value = exchange_by_cur(data_exchange, currency_code)
+                # exchange_value = exchange_by_cur(data_exchange, currency_code)
 
-                revenue = int(banknote_item) * int(face_money_value) / exchange_value
+                revenue = int(banknote_item) * int(face_money_value)
                 revenue = round(revenue, 2)
-                print(str(lst_pgd[pgd_index])+"#"+str(banknote_item)+"#"+str(currency_code)+"#"+str(face_money_value)+"="+str(revenue))
+                result_str = str(lst_pgd[pgd_index])+"#"+str(banknote_item)+"#"+str(currency_code)+"#"+str(face_money_value)+"="+str(revenue)
+                # print(result_str)
                 pgd_index += 1
+                lst_revenue_face_value.append(result_str)
+
+        matrix_revenue_face_value.append(lst_revenue_face_value)
+
+    print(matrix_revenue_face_value)
+    return matrix_revenue_face_value

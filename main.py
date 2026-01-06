@@ -1,7 +1,8 @@
 import pandas as pd
 from openpyxl import load_workbook
 
-from revenue import revenue_calculate
+from excel_writer import copy_excel_columns
+from revenue import get_revenue_calculate_matrix
 
 df = pd.read_excel("data_raw.xlsx", header=1)
 
@@ -26,12 +27,17 @@ for col in telegram_col:
         lst_ma_pgd.append(str(col[8:14]))
         lst_ma_cn.append(str(col[8:11]))
 
-# print(lst_ma_pgd)
+copy_excel_columns(
+    input_file="data_raw.xlsx",
+    output_file="result.xlsx",
+    sheet_name=None,
+    src_start_col_letter="AC",
+    header_row=1,
+    gap_cols=5,
+    matrix_revenue=get_revenue_calculate_matrix(lst_ma_pgd)
+)
 
-revenue_calculate(lst_ma_pgd)
-
-
-
+#
 # wb = load_workbook("data_raw.xlsx")
 # ws = wb.active
 #
@@ -80,7 +86,8 @@ revenue_calculate(lst_ma_pgd)
 #         column=INSERT_COL_CN
 #     ).value = value
 #
-# wb.save("data_output.xlsx")
+# # wb.save("data_output.xlsx")
+# wb.save("result.xlsx")
 
 # DN_26122025120155271622
 # 26122025279153271365
